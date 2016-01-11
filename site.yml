@@ -1,0 +1,7 @@
+---
+- hosts: trac
+  roles:
+    - mysql
+    - trac
+    - uwsgi
+    - nginx

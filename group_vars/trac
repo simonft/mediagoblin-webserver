@@ -1,0 +1,63 @@
+---
+mediagoblin_trac_mysql_password: <something>
+
+trac:
+  instances:
+    mediagoblin:
+      path: '/var/trac/mediagoblin/'
+      static_files: 'trac_static'
+      config:
+        trac:
+          database: "mysql://trac:{{ mediagoblin_trac_mysql_password }}@localhost:3306/mediagoblin_trac"
+        header_logo:
+          alt: 'GNU MediaGoblin'
+          height: '-1'
+          link: 'https://issues.mediagoblin.org/report/3'
+          src: 'site/mediagoblin_bugs.png'
+          width: '-1'
+        project:
+          descr: 'GNU MediaGoblin'
+          footer: '<a href="http://mediagoblin.org/">GNU MediaGoblin</a> issue tracker'
+          name: 'GNU MediaGoblin'
+          url: 'https://issues.mediagoblin.org/'
+          file: 'static/mediagoblin_bugs.png'
+
+uwsgi:
+  plugins:
+    - python
+  config:
+    uwsgi:
+      emperor: '/etc/uwsgi/vassals/'
+      socket: '/run/uwsgi-emperor.sock'
+  vassel_files:
+    path:
+      '/etc/uwsgi/vassals/'
+    vassels:
+      mediagoblin:
+        config:
+          uwsgi:
+            plugin: 'python'
+            socket: '/tmp/uwsgi-mediagoblin.socket'
+            module: 'trac.web.main'
+            callable: 'dispatch_request'
+            env: 'TRAC_ENV=/var/trac/mediagoblin'
+
+mysql_bind_address: '127.0.0.1'
+
+mysql_databases:
+  - name: mediagoblin_trac
+
+mysql_users:
+  - name: trac
+    host: 'localhost'
+    password: "{{ mediagoblin_trac_mysql_password }}"
+    priv: 'mediagoblin_trac.*:ALL'
+
+nginx_vhosts:
+  - listen: '80'
+    server_name: 'issues-dev.mediagoblin.org'
+    extra_parameters: |
+      location / {
+        uwsgi_pass unix:///tmp/uwsgi-mediagoblin.socket;
+        include uwsgi_params;
+      }
