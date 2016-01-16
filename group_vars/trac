@@ -61,3 +61,6 @@ nginx_vhosts:
         uwsgi_pass unix:///tmp/uwsgi-mediagoblin.socket;
         include uwsgi_params;
       }
+      location /chrome/common/ {
+        alias /usr/lib/python2.7/dist-packages/trac/htdocs/;
+      }
