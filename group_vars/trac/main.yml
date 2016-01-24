@@ -1,0 +1,3 @@
+# Settings that span more than one role
+---
+mediagoblin_trac_mysql_password: <something>

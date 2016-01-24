@@ -1,0 +1,13 @@
+# MySQL related variables
+---
+mysql_bind_address: '127.0.0.1'
+
+mysql_databases:
+  - name: mediagoblin_trac
+
+mysql_users:
+  - name: trac
+    host: 'localhost'
+    password: "{{ mediagoblin_trac_mysql_password }}"
+    priv: 'mediagoblin_trac.*:ALL'
+

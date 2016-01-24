@@ -1,0 +1,13 @@
+# nginx related variables
+---
+nginx_vhosts:
+  - listen: '80'
+    server_name: 'issues-dev.mediagoblin.org'
+    extra_parameters: |
+      location / {
+        uwsgi_pass unix:///tmp/uwsgi-mediagoblin.socket;
+        include uwsgi_params;
+      }
+      location /chrome/common/ {
+        alias /usr/lib/python2.7/dist-packages/trac/htdocs/;
+      }

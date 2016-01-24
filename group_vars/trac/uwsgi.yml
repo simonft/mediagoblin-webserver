@@ -1,0 +1,22 @@
+# uwsgi related variables
+---
+uwsgi:
+  plugins:
+    - python
+  config:
+    uwsgi:
+      emperor: '/etc/uwsgi/vassals/'
+      socket: '/run/uwsgi-emperor.sock'
+  vassel_files:
+    path:
+      '/etc/uwsgi/vassals/'
+    vassels:
+      mediagoblin:
+        config:
+          uwsgi:
+            plugin: 'python'
+            socket: '/tmp/uwsgi-mediagoblin.socket'
+            module: 'trac.web.main'
+            callable: 'dispatch_request'
+            env: 'TRAC_ENV=/var/trac/mediagoblin'
+

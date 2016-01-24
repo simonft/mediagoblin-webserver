@@ -1,22 +1,5 @@
+# Settings for trac
 ---
-mediagoblin_trac_mysql_password: <something>
-
-apt_preferences:
-  # don't install from testing unless specified
-  testing:
-    package: '*'
-    pin: 'release a=testing'
-    priority: '-10'
-  # Install a newer version of trac
-  testing-trac:
-    package: 'trac'
-    pin: 'release a=testing'
-    priority: '900'
-
-apt_sources:
-  testing:
-    repo: "deb {{ default_repo }} stretch main"
-
 trac:
   plugins:
     apt:
@@ -145,46 +128,3 @@ trac:
           trap_karma: '25'
           trust_authenticated: 'false'
           use_external: 'true'
-
-uwsgi:
-  plugins:
-    - python
-  config:
-    uwsgi:
-      emperor: '/etc/uwsgi/vassals/'
-      socket: '/run/uwsgi-emperor.sock'
-  vassel_files:
-    path:
-      '/etc/uwsgi/vassals/'
-    vassels:
-      mediagoblin:
-        config:
-          uwsgi:
-            plugin: 'python'
-            socket: '/tmp/uwsgi-mediagoblin.socket'
-            module: 'trac.web.main'
-            callable: 'dispatch_request'
-            env: 'TRAC_ENV=/var/trac/mediagoblin'
-
-mysql_bind_address: '127.0.0.1'
-
-mysql_databases:
-  - name: mediagoblin_trac
-
-mysql_users:
-  - name: trac
-    host: 'localhost'
-    password: "{{ mediagoblin_trac_mysql_password }}"
-    priv: 'mediagoblin_trac.*:ALL'
-
-nginx_vhosts:
-  - listen: '80'
-    server_name: 'issues-dev.mediagoblin.org'
-    extra_parameters: |
-      location / {
-        uwsgi_pass unix:///tmp/uwsgi-mediagoblin.socket;
-        include uwsgi_params;
-      }
-      location /chrome/common/ {
-        alias /usr/lib/python2.7/dist-packages/trac/htdocs/;
-      }
