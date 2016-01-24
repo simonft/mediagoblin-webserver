@@ -1,6 +1,22 @@
 ---
 mediagoblin_trac_mysql_password: <something>
 
+apt_preferences:
+  # don't install from testing unless specified
+  testing:
+    package: '*'
+    pin: 'release a=testing'
+    priority: '-10'
+  # Install a newer version of trac
+  testing-trac:
+    package: 'trac'
+    pin: 'release a=testing'
+    priority: '900'
+
+apt_sources:
+  testing:
+    repo: "deb {{ default_repo }} stretch main"
+
 trac:
   plugins:
     apt:

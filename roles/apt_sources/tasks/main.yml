@@ -1,0 +1,6 @@
+---
+- name: set apt repositories
+  apt_repository:
+    repo: "{{ item.value.repo }}"
+  with_dict: apt_sources
+  when: apt_sources

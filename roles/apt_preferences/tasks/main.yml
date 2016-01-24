@@ -1,0 +1,6 @@
+---
+- name: set apt preferences
+  template:
+    src: etc/apt/preferences
+    dest: /etc/apt/preferences
+  when: apt_preferences

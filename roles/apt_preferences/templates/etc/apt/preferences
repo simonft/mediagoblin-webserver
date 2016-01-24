@@ -1,0 +1,6 @@
+{% for version, options in apt_preferences.iteritems() %}
+Package: {{ options.package | default('*') }}
+Pin: {{ options.pin }}
+Pin-Priority: {{ options.priority }}
+
+{% endfor %}

@@ -1,7 +1,10 @@
 ---
 - hosts: trac
   roles:
+    - apt_sources
+    - apt_preferences
     - mysql
     - trac
+    - trac-spamfilter
     - uwsgi
     - nginx
