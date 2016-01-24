@@ -1,0 +1,7 @@
+# Temporary hack until I find a better way of deploying this
+
+---
+- name: copy .egg file to plugins directory
+  copy:
+    src: TracSpamFilter-1.0.6.dev0-py2.7.egg
+    dest: /var/trac/mediagoblin/plugins/TracSpamFilter-1.0.6.dev0-py2.7.egg
